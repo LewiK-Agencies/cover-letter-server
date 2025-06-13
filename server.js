@@ -1,13 +1,15 @@
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
+const cors = require('cors'); // Added
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://lewik-agencies.github.io' // Allow requests from your frontend
+}));
 app.use(express.json());
 
 // Gemini config
@@ -24,22 +26,22 @@ app.post('/generate-cover-letter', async (req, res) => {
     const skillsText = skills.join(', ');
 
     const prompt = `
-Generate a highly professional, outstanding, exceptional and persuasive cover letter that will make the said person win the Job immediately.
+    Generate a highly professional and persuasive cover letter.
 
-Candidate Info:
-Full Name: ${full_name}
-Email: ${email}
-Phone: ${phone_number}
-County: ${county}
+    Candidate Info:
+    Full Name: ${full_name}
+    Email: ${email}
+    Phone: ${phone_number}
+    County: ${county}
 
-Job Applying For: ${advertised_job}
-Company: ${company_name}
+    Job Applying For: ${advertised_job}
+    Company: ${company_name}
 
-Work Experience: ${workExpText}
-Education Background: ${eduText}
-Key Skills: ${skillsText}
+    Work Experience: ${workExpText}
+    Education Background: ${eduText}
+    Key Skills: ${skillsText}
 
-Use a convincing and formal tone. Include a subject line (RE:...), a body with 3–4 paragraphs, and a sign-off with the candidate’s name and contact details. Output ONLY the letter.
+    Use a convincing and formal tone. Include a subject line (RE:...), a body with 3–4 paragraphs, and a sign-off with the candidate’s name and contact details. Output ONLY the letter.
     `;
 
     const result = await model.generateContent(prompt);
@@ -52,7 +54,7 @@ Use a convincing and formal tone. Include a subject line (RE:...), a body with 3
   }
 });
 
-// Endpoint for ATS analysis (reusing Gemini for simplicity)
+// Endpoint for ATS analysis
 app.post('/analyze-ats', async (req, res) => {
   try {
     const { content, jobTitle } = req.body;
