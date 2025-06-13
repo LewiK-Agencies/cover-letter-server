@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-  origin: 'https://lewik-agencies.github.io' // Allow requests from your frontend
+  origin: 'https://lewik-agencies.github.io/Cover-Letter-Tool/' // Allow requests from your frontend
 }));
 app.use(express.json());
 
