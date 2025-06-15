@@ -7,7 +7,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://lewik-agencies.github.io' // Allow requests from your frontend
+}));
 app.use(express.json());
 
 // Gemini config
